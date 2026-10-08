@@ -1,14 +1,13 @@
 package com.agora.address;
 
 import jakarta.persistence.*;
-
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
 @Entity
-@Table
-public class Ward {
+@Table(name = "province")
+public class Province {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
@@ -19,6 +18,6 @@ public class Ward {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "province_id", nullable = false)
-    private Province province;
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 }

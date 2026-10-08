@@ -24,7 +24,7 @@ public class Address {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "province_id", nullable = false)
-    private AddressServiceImpl.Province province;
+    private Province province;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "country_id", nullable = false)
