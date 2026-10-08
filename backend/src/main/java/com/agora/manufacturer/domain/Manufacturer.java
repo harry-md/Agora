@@ -1,16 +1,22 @@
-package com.agora.manufacturer;
+package com.agora.manufacturer.domain;
 
-import com.agora.address.Country;
 
 import jakarta.persistence.*;
+
+import lombok.*;
 
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
-@Table(name = "manufacturer")
-public class Manufacturer {
+@Table(name = "manufacturers")
+class Manufacturer {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
@@ -23,16 +29,16 @@ public class Manufacturer {
     @Column(nullable = false, length = 150)
     private String slug;
 
-    @Column(name = "logo_url", nullable = false, length = 500)
+    @Column(nullable = false, length = 500)
     private String logoURL;
 
     @Column(columnDefinition = "text")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "country_id", nullable = false)
-    private Country country;
+    @Column(nullable = false)
+    private UUID countryId;
 
-    @Column(name = "is_active", nullable = false)
+    @Builder.Default
+    @Column(nullable = false)
     private boolean isActive = true;
 }

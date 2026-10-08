@@ -1,8 +1,8 @@
-package com.agora.order;
-
-import com.agora.user.User;
+package com.agora.order.domain;
 
 import jakarta.persistence.*;
+
+import lombok.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Generated;
@@ -14,36 +14,36 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
-@Table(name = "order")
-public class Order {
+@Table(name = "orders")
+class Order {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
     @Column(nullable = false, updatable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(nullable = false)
+    private UUID userId;
 
-    @Column(name = "total_price", nullable = false, precision = 15, scale = 2)
+    @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal totalPrice;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status = OrderStatus.PENDING;
 
-    @Column(
-            name = "order_number",
-            nullable = false,
-            unique = true,
-            updatable = false,
-            insertable = false)
+    @Column(nullable = false, unique = true, updatable = false, insertable = false)
     @Generated(event = EventType.INSERT)
     private Long orderNumber;
 
-    @Column(name = "paid_at")
+    @Column
     private Instant paidAt;
 
     @Column(nullable = false, updatable = false)

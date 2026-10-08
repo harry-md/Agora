@@ -29,4 +29,7 @@ spring:
           provider_disables_autocommit: true
         order_updates: true
         order_inserts: true
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
 

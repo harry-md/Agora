@@ -1,8 +1,8 @@
-package com.agora.user;
-
-import com.agora.address.Address;
+package com.agora.user.domain;
 
 import jakarta.persistence.*;
+
+import lombok.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,6 +11,11 @@ import org.hibernate.annotations.UuidGenerator;
 import java.time.Instant;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -51,7 +56,6 @@ public class User {
     @Column(nullable = false)
     private boolean isActive = true;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", nullable = false, unique = true)
-    private Address address;
+    @Column(name = "address_id")
+    private UUID addressId;
 }

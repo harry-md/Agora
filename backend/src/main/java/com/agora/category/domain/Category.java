@@ -1,6 +1,8 @@
-package com.agora.category;
+package com.agora.category.domain;
 
 import jakarta.persistence.*;
+
+import lombok.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,8 +11,13 @@ import org.hibernate.annotations.UuidGenerator;
 import java.time.Instant;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class Category {
     @Id
     @GeneratedValue
@@ -24,10 +31,11 @@ public class Category {
     @Column(nullable = false, length = 150)
     private String slug;
 
-    @Column(name = "image_url", nullable = false, length = 500)
+    @Column(nullable = false, length = 500)
     private String imageURL;
 
-    @Column(name = "is_active", nullable = false)
+    @Builder.Default
+    @Column(nullable = false)
     private boolean isActive = true;
 
     @Column(nullable = false, updatable = false)
@@ -38,7 +46,7 @@ public class Category {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "parent_id")
     private Category parent;
 }
