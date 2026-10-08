@@ -1,6 +1,8 @@
-package com.agora.product;
+package com.agora.product.domain;
 
 import jakarta.persistence.*;
+
+import lombok.*;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -9,16 +11,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
-@Table(name = "product_detail")
-public class ProductDetail {
+@Table(name = "product_details")
+class ProductDetail {
 
     @Id
-    private UUID id;
+    @Column(nullable = false)
+    private UUID productId;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId
-    @JoinColumn(name = "product_id")
+    @JoinColumn(nullable = false)
     private Product product;
 
     @Column(columnDefinition = "text")
