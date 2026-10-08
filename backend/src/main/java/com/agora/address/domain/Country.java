@@ -1,14 +1,21 @@
-package com.agora.address;
+package com.agora.address.domain;
 
 import jakarta.persistence.*;
+
+import lombok.*;
 
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
-@Table
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@Table(name = "countries")
 @Entity
-public class Country {
+class Country {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)

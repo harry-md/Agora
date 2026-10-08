@@ -1,6 +1,4 @@
-package com.agora.order;
-
-import com.agora.product.Product;
+package com.agora.order.domain;
 
 import jakarta.persistence.*;
 
@@ -10,8 +8,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "order_detail")
-public class OrderDetail {
+@Table(name = "order_details")
+class OrderDetail {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
@@ -22,9 +20,8 @@ public class OrderDetail {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", nullable = false, updatable = false)
-    private Product product;
+    @Column(nullable = false)
+    private UUID productId;
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal price;

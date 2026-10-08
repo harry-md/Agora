@@ -1,4 +1,4 @@
-package com.agora.order;
+package com.agora.order.domain;
 
 public enum OrderStatus {
     PENDING,
