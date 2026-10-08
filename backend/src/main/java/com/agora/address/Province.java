@@ -1,6 +1,7 @@
 package com.agora.address;
 
 import jakarta.persistence.*;
+
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
