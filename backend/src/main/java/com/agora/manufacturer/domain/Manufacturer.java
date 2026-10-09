@@ -1,6 +1,5 @@
 package com.agora.manufacturer.domain;
 
-
 import jakarta.persistence.*;
 
 import lombok.*;
