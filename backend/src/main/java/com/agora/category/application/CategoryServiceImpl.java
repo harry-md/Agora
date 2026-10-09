@@ -7,11 +7,10 @@ import com.agora.category.domain.Category;
 import com.agora.category.persistence.CategoryRepository;
 import com.agora.exception.ResourceNotFound;
 
-import jakarta.transaction.Transactional;
-
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.Normalizer;
 import java.util.List;
@@ -51,7 +50,7 @@ class CategoryServiceImpl implements CategoryService {
         c.setSlug(uniqueSlug(toSlug(request.name())));
         c.setParent(parent);
         Category saved = categoryRepository.save(c);
-        return categoryMapper.toResponse(saved);
+        return categoryMapper.toDTO(saved);
     }
 
     private String toSlug(String input) {

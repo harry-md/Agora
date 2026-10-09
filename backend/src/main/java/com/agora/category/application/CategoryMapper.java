@@ -11,10 +11,11 @@ import org.mapstruct.Mapping;
 public interface CategoryMapper {
     CategoryResponse toDTO(Category category);
 
-    CategoryResponse toResponse(Category category);
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "slug", ignore = true)
     @Mapping(target = "parent", ignore = true)
+    @Mapping(target = "active", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Category toEntity(CategoryRequest request);
 }
