@@ -1,7 +1,6 @@
 package com.agora.sale.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 
 import org.hibernate.annotations.UuidGenerator;
 
@@ -18,21 +17,18 @@ public class SaleItem {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "sale_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Sale sale;
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal price;
 
-    @Min(0)
     @Column(nullable = false)
     private int quantity;
 
-    @Min(0)
     @Column(nullable = false)
     private int soldQuantity;
 
-    @Min(0)
     @Column(nullable = false)
     private int maxPerUser;
 }

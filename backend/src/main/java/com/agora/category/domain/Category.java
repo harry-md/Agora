@@ -32,11 +32,11 @@ public class Category {
     private String slug;
 
     @Column(nullable = false, length = 500)
-    private String imageURL;
+    private String imageUrl;
 
     @Builder.Default
-    @Column(nullable = false)
-    private boolean isActive = true;
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
@@ -46,7 +46,7 @@ public class Category {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 }

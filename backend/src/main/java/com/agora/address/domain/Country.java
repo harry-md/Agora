@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "countries")
 @Entity
-class Country {
+public class Country {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
