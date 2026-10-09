@@ -33,7 +33,7 @@ class Sale {
     private Instant endAt;
 
     @Column(nullable = false, length = 500)
-    private String bannerURL;
+    private String bannerUrl;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)

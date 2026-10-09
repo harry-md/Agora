@@ -25,10 +25,10 @@ public class User {
     @Column(nullable = false, updatable = false)
     private UUID id;
 
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, unique = true, length = 200)
     private String username;
 
     @Column(nullable = false, length = 200)
@@ -37,10 +37,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Builder.Default
     @Column(nullable = false)
     private String avatar =
             "https://res.cloudinary.com/dyjdromdd/image/upload/v1791283629/1760239073710_554416787599948448_g1065711509247428827_730f381d0001f3c22e7483cc5b21fef9_zwreqq.jpg";
 
+    @Builder.Default
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.CUSTOMER;
@@ -53,9 +55,10 @@ public class User {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(nullable = false)
-    private boolean isActive = true;
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
 
-    @Column(name = "address_id")
+    @Column(nullable = false)
     private UUID addressId;
 }

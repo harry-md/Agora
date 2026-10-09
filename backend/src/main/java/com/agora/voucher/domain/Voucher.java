@@ -32,7 +32,7 @@ public class Voucher {
     @Column(nullable = false)
     private DiscountType type;
 
-    @Column(nullable = false, precision = 12, scale = 2)
+    @Column(nullable = false)
     private float discountValue;
 
     @Column(nullable = false, precision = 12, scale = 2)
@@ -55,8 +55,8 @@ public class Voucher {
     private Instant endAt;
 
     @Builder.Default
-    @Column(nullable = false)
-    private boolean isActive = true;
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
