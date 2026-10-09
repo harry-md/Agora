@@ -53,9 +53,10 @@ public class User {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(nullable = false)
-    private boolean isActive = true;
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
 
-    @Column(name = "address_id")
+    @Column(nullable = false)
     private UUID addressId;
 }

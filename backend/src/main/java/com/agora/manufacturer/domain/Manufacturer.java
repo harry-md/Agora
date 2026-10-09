@@ -1,6 +1,5 @@
 package com.agora.manufacturer.domain;
 
-
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -30,7 +29,7 @@ class Manufacturer {
     private String slug;
 
     @Column(nullable = false, length = 500)
-    private String logoURL;
+    private String logoUrl;
 
     @Column(columnDefinition = "text")
     private String description;
@@ -39,6 +38,6 @@ class Manufacturer {
     private UUID countryId;
 
     @Builder.Default
-    @Column(nullable = false)
-    private boolean isActive = true;
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
 }
