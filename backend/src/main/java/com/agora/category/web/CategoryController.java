@@ -1,10 +1,12 @@
 package com.agora.category.web;
 
+import com.agora.category.CategoryRequest;
 import com.agora.category.CategoryResponse;
 import com.agora.category.CategoryService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping("/")
+    @GetMapping
     public List<CategoryResponse> getCategories() {
         return categoryService.getCategories();
     }
@@ -23,5 +25,11 @@ public class CategoryController {
     @GetMapping("/{slug}")
     public CategoryResponse getCategoryBySlug(@PathVariable String slug) {
         return categoryService.getCategoryBySlug(slug);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryResponse addCategory(@RequestBody CategoryRequest request) {
+        return categoryService.addCategory(request);
     }
 }

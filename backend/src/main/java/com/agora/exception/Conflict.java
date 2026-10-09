@@ -3,9 +3,9 @@ package com.agora.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class ResourceNotFound extends RuntimeException {
-    public ResourceNotFound(String message) {
+@ResponseStatus(HttpStatus.CONFLICT)
+public class Conflict extends RuntimeException {
+    public Conflict(String message) {
         super(message);
     }
 }
