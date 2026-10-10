@@ -1,5 +1,7 @@
 package com.agora.security.internal;
 
+import com.agora.security.TokenService;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,6 +32,8 @@ import java.util.List;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final TokenService tokenService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/**")
@@ -65,7 +70,8 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/health")
                         .permitAll()
                         .anyRequest()
-                        .hasRole("ADMIN"));
+                        .hasRole("ADMIN"))
+                .addFilterBefore(new JwtFilter(tokenService), BasicAuthenticationFilter.class);
         return http.build();
     }
 
