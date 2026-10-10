@@ -1,6 +1,7 @@
 package com.agora.security.internal;
 
 import com.agora.security.CustomUser;
+import com.agora.security.TokenService;
 import com.nimbusds.jwt.JWTClaimsSet;
 
 import jakarta.servlet.*;
@@ -23,7 +24,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final JwtUtil jwtUtil;
+    private final TokenService tokenService;
     private static final String JWT_COOKIE_NAME = "jwt_token";
 
     @Override
@@ -42,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (token != null) {
             try {
-                JWTClaimsSet claimsSet = jwtUtil.validateTokenAndGetClaims(token);
+                JWTClaimsSet claimsSet = tokenService.validateTokenAndGetClaims(token);
                 if (claimsSet != null) {
                     String userId = claimsSet.getStringClaim("userId");
                     String username = claimsSet.getSubject();

@@ -1,23 +1,25 @@
 package com.agora.security.internal;
 
 import com.agora.security.CustomUser;
+import com.agora.security.TokenService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Component
-@AllArgsConstructor
-public class JwtUtil {
+@Service
+@RequiredArgsConstructor
+class TokenServiceImpl implements TokenService {
     private final JwtProperties props;
 
+    @Override
     public String generateToken(CustomUser principal) throws JOSEException {
         JWSSigner signer = new MACSigner(props.secret());
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -47,6 +49,7 @@ public class JwtUtil {
         return null;
     }
 
+    @Override
     public JWTClaimsSet validateTokenAndGetClaims(String token) throws Exception {
         return validateToken(token);
     }

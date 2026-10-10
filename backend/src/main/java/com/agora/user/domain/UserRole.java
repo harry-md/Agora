@@ -1,6 +1,6 @@
 package com.agora.user.domain;
 
-enum UserRole {
+public enum UserRole {
     STAFF,
     ADMIN,
     CUSTOMER
