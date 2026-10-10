@@ -10,8 +10,8 @@ import com.agora.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.text.Normalizer;
 import java.util.List;
 
@@ -20,6 +20,7 @@ import java.util.List;
 class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
     public CategoryResponse getCategoryBySlug(String slug) {
@@ -37,7 +38,6 @@ class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public CategoryResponse addCategory(CategoryRequest request) {
         Category parent = null;
         if (request.parentId() != null) {
@@ -62,9 +62,8 @@ class CategoryServiceImpl implements CategoryService {
 
     private String uniqueSlug(String base) {
         String slug = base;
-        int i = 2;
         while (categoryRepository.existsBySlug(slug)) {
-            slug = base + "-" + i++;
+            slug = base + "-" + String.format("%04d", RANDOM.nextInt(10_000));
         }
         return slug;
     }
