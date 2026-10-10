@@ -1,6 +1,6 @@
 package com.agora.user.web;
 
-import com.agora.user.UserRegisterRequest;
+import com.agora.user.RegisterUserRequest;
 import com.agora.user.UserResponse;
 import com.agora.user.UserService;
 
@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponse> register(
-            @Valid @ModelAttribute UserRegisterRequest request) {
+            @Valid @ModelAttribute RegisterUserRequest request) {
         return new ResponseEntity<>(userService.register(request), HttpStatus.CREATED);
     }
 }
