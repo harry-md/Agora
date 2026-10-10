@@ -4,6 +4,8 @@ import com.agora.category.CategoryRequest;
 import com.agora.category.CategoryResponse;
 import com.agora.category.CategoryService;
 
+import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -29,7 +31,8 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> addCategory(@RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> addCategory(
+            @Valid @ModelAttribute CategoryRequest request) {
         return new ResponseEntity<>(categoryService.addCategory(request), HttpStatus.CREATED);
     }
 }

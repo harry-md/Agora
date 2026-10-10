@@ -6,6 +6,20 @@ info:
 http:
   method: POST
   url: http://localhost:8080/api/categories
+  body:
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: iPhone
+      - name: image
+        type: file
+        value:
+          - /Users/vanlong/Downloads/images.jpeg
+        contentType: image/jpeg
+      - name: parentId
+        type: text
+        value: 01a1244c-f2f9-727e-b9bf-dc1ab448c4c0
   auth: inherit
 
 settings:

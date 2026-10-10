@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: http://localhost:8080/api/categories/dien-thoai
+  url: http://localhost:8080/api/categories/iphone
   auth: inherit
 
 settings:
