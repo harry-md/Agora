@@ -17,10 +17,16 @@ http:
         value: "1"
       - name: fullName
         type: text
-        value: ChoHai
+        value: ABC
       - name: email
         type: text
         value: user@gmail.com
+      - name: avatar
+        type: file
+        value:
+          - /home/harry/Downloads/cat.jpg
+        contentType: image/jpeg
+        disabled: true
   auth: inherit
 
 settings:

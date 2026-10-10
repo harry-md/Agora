@@ -1,6 +1,6 @@
 package com.agora.user.application;
 
-import com.agora.user.UserRegisterRequest;
+import com.agora.user.RegisterUserRequest;
 import com.agora.user.UserResponse;
 import com.agora.user.domain.User;
 
@@ -12,5 +12,5 @@ public interface UserMapper {
     UserResponse toResponse(User user);
 
     @Mapping(target = "avatar", ignore = true)
-    User toEntity(UserRegisterRequest request);
+    User toEntity(RegisterUserRequest request);
 }
