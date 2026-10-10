@@ -5,7 +5,7 @@ import com.agora.category.CategoryResponse;
 import com.agora.category.CategoryService;
 import com.agora.category.domain.Category;
 import com.agora.category.persistence.CategoryRepository;
-import com.agora.exception.ResourceNotFound;
+import com.agora.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,7 @@ class CategoryServiceImpl implements CategoryService {
         return categoryRepository
                 .findBySlug(slug)
                 .map(categoryMapper::toDTO)
-                .orElseThrow(() -> new ResourceNotFound("Không tìm thấy danh mục"));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục"));
     }
 
     @Override
@@ -43,7 +43,8 @@ class CategoryServiceImpl implements CategoryService {
         if (request.parentId() != null) {
             parent = categoryRepository
                     .findById(request.parentId())
-                    .orElseThrow(() -> new ResourceNotFound("Không tìm thấy cha danh mục"));
+                    .orElseThrow(
+                            () -> new ResourceNotFoundException("Không tìm thấy cha danh mục"));
         }
 
         Category c = categoryMapper.toEntity(request);

@@ -1,3 +1,3 @@
 package com.agora.user;
 
-public record UserResponse(String email, String username, String fullName, String avatar) {}
+public record UserResponse(String username, String email, String fullName, String avatar) {}

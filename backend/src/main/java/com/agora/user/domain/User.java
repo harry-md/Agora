@@ -17,7 +17,12 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = {
+            @UniqueConstraint(name = "uq_users_username", columnNames = "username"),
+            @UniqueConstraint(name = "uq_users_email", columnNames = "email")
+        })
 public class User {
     @Id
     @GeneratedValue
@@ -59,6 +64,6 @@ public class User {
     @Column(name = "is_active", nullable = false)
     private boolean active = true;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private UUID addressId;
 }

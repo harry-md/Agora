@@ -1,78 +1,83 @@
 package com.agora.user.application;
 
-import com.agora.address.AddressRequest;
-import com.agora.address.AddressResponse;
-import com.agora.address.AddressService;
-import com.agora.exception.Conflict;
-import com.agora.exception.ResourceNotFound;
-import com.agora.user.RegisterRequest;
+import com.agora.exception.BadRequestException;
+import com.agora.media.ImageStorageService;
+import com.agora.security.CustomUser;
+import com.agora.user.UserRegisterRequest;
 import com.agora.user.UserResponse;
 import com.agora.user.UserService;
 import com.agora.user.domain.User;
+import com.agora.user.domain.UserRole;
 import com.agora.user.persistence.UserRepository;
+
+import jakarta.validation.constraints.NotNull;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.UUID;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-class UserServiceImpl implements UserService {
-
+class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
-    private final AddressService addressService;
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
+    private final ImageStorageService imageStorageService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public boolean checkUsernameExist(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    @Transactional
-    public UserResponse register(RegisterRequest request) {
-        String email = request.email().trim();
-        String username = request.username().trim();
-        String fullName = request.fullName().trim();
-
-        if (userRepository.existsByUsername(username)) {
-            throw new Conflict("Tên đăng nhập đã tồn tại");
-        }
-        if (userRepository.existsByEmail(email)) {
-            throw new Conflict("Email đã tồn tại");
+    public UserResponse register(UserRegisterRequest request) {
+        String avatarUrl = null;
+        MultipartFile avatar = request.avatar();
+        if (avatar != null && !avatar.isEmpty()) {
+            avatarUrl = imageStorageService.upload(request.avatar());
         }
 
-        UUID addressId = addressService.addAddress(request.address());
-        User user = User.builder()
-                .email(email)
-                .username(username)
-                .fullName(fullName)
-                .password(passwordEncoder.encode(request.password()))
-                .addressId(addressId)
-                .build();
-        return userMapper.toResponse(userRepository.save(user));
+        if (userRepository.existsByUsernameAndEmail(request.username(), request.email())) {
+            if (avatarUrl != null) {
+                imageStorageService.delete(avatarUrl);
+            }
+            throw new BadRequestException("Tên đăng nhập hoặc email đã tồn tại");
+        }
+
+        User user = userMapper.toEntity(request);
+        user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(UserRole.CUSTOMER);
+        if (avatarUrl != null) {
+            user.setAvatar(avatarUrl);
+        }
+        try {
+            return userMapper.toResponse(userRepository.save(user));
+        } catch (Exception ex) {
+            imageStorageService.delete(avatarUrl);
+            throw ex;
+        }
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public AddressResponse getAddress(UUID userId) {
-        return addressService.getAddress(findUser(userId).getAddressId());
-    }
+    public UserDetails loadUserByUsername(@NotNull String username)
+            throws UsernameNotFoundException {
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy user"));
 
-    @Override
-    @Transactional
-    public AddressResponse updateAddress(UUID userId, AddressRequest request) {
-        return addressService.updateAddress(findUser(userId).getAddressId(), request);
-    }
-
-    private User findUser(UUID userId) {
-        return userRepository
-                .findById(userId)
-                .orElseThrow(() -> new ResourceNotFound("Không tìm thấy người dùng"));
+        Set<GrantedAuthority> authorities =
+                Set.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        return new CustomUser(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getFullName(),
+                user.getAvatar(),
+                user.getRole().name(),
+                authorities);
     }
 }

@@ -8,6 +8,8 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    hikari:
+      auto-commit: false
   sql:
     init:
       mode: always
@@ -29,7 +31,16 @@ spring:
           provider_disables_autocommit: true
         order_updates: true
         order_inserts: true
+
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION}
 
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
+agora:
+  auth:
+    cookie-secure: false
