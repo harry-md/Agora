@@ -1,0 +1,39 @@
+package com.agora.address.domain;
+
+import jakarta.persistence.*;
+
+import lombok.*;
+
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "addresses")
+public class Address {
+    @Id
+    @GeneratedValue
+    @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
+    @Column(nullable = false, updatable = false)
+    private UUID id;
+
+    @Column(nullable = false)
+    private String address;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ward_id", nullable = false)
+    private Ward ward;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "province_id", nullable = false)
+    private Province province;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
+}
