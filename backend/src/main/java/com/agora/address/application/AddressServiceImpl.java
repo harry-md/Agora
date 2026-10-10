@@ -17,7 +17,6 @@ import com.agora.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -31,13 +30,11 @@ class AddressServiceImpl implements AddressService {
     private final AddressMapper addressMapper;
 
     @Override
-    @Transactional(readOnly = true)
     public AddressResponse getAddress(UUID id) {
-        return addressMapper.toResponse(find(id));
+        return addressMapper.toResponse(getAddressOrThrow(id));
     }
 
     @Override
-    @Transactional
     public UUID addAddress(AddressRequest request) {
         Address address = addressMapper.toEntity(request);
         applyLocation(address, request);
@@ -45,15 +42,14 @@ class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    @Transactional
     public AddressResponse updateAddress(UUID id, AddressRequest request) {
-        Address address = find(id);
+        Address address = getAddressOrThrow(id);
         addressMapper.updateEntity(request, address);
         applyLocation(address, request);
         return addressMapper.toResponse(address);
     }
 
-    private Address find(UUID id) {
+    private Address getAddressOrThrow(UUID id) {
         return addressRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy địa chỉ"));

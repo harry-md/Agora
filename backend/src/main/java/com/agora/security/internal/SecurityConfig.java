@@ -36,6 +36,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.securityMatcher("/api/**")
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -63,9 +64,14 @@ public class SecurityConfig {
                                 }
                                 """);
                         }))
+                .addFilterBefore(new JwtFilter(tokenService), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/categories")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/categories/*")
                         .permitAll()
                         .requestMatchers("/actuator/health")
                         .permitAll()
