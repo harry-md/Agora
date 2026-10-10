@@ -3,7 +3,7 @@ package com.agora.user.application;
 import com.agora.exception.BadRequestException;
 import com.agora.media.ImageStorageService;
 import com.agora.security.CustomUser;
-import com.agora.user.UserRegisterRequest;
+import com.agora.user.RegisterUserRequest;
 import com.agora.user.UserResponse;
 import com.agora.user.UserService;
 import com.agora.user.domain.User;
@@ -19,7 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,10 +31,10 @@ class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ImageStorageService imageStorageService;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponse register(UserRegisterRequest request) {
+    public UserResponse register(RegisterUserRequest request) {
         String avatarUrl = null;
         MultipartFile avatar = request.avatar();
         if (avatar != null && !avatar.isEmpty()) {

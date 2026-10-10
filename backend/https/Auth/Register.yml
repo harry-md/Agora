@@ -26,6 +26,7 @@ http:
         value:
           - /home/harry/Downloads/cat.jpg
         contentType: image/jpeg
+        disabled: true
   auth: inherit
 
 settings:
