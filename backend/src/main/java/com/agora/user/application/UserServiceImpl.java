@@ -28,6 +28,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 class UserServiceImpl implements UserService, UserDetailsService {
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ImageStorageService imageStorageService;

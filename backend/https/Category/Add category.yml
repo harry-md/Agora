@@ -15,11 +15,11 @@ http:
       - name: image
         type: file
         value:
-          - /Users/vanlong/Downloads/images.jpeg
+          - /home/harry/Downloads/phone.jpg
         contentType: image/jpeg
       - name: parentId
         type: text
-        value: 01a1244c-f2f9-727e-b9bf-dc1ab448c4c0
+        value: 01a1292e-b2fd-781d-b764-df35081dc58c
   auth: inherit
 
 settings:

@@ -17,8 +17,11 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
-@Table(name = "products")
-class Product {
+@Table(
+        name = "products",
+        uniqueConstraints = {@UniqueConstraint(name = "uq_products_slug", columnNames = "slug")})
+public class Product {
+
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
@@ -32,7 +35,10 @@ class Product {
     private String slug;
 
     @Column(nullable = false)
-    private UUID manufacturer;
+    private UUID manufacturerId;
+
+    @Column(nullable = false)
+    private UUID categoryId;
 
     @Column(length = 500)
     private String thumbnail;

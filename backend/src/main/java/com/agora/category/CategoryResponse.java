@@ -1,3 +1,5 @@
 package com.agora.category;
 
-public record CategoryResponse(String name, String slug, String imageUrl) {}
+import java.util.UUID;
+
+public record CategoryResponse(UUID id, String name, String slug, String imageUrl) {}

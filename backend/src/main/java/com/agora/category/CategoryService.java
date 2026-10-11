@@ -1,11 +1,15 @@
 package com.agora.category;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
+
     CategoryResponse getCategoryBySlug(String slug);
 
-    List<CategoryResponse> getCategories();
+    Page<CategoryResponse> getCategories(Pageable pageable);
 
-    CategoryResponse addCategory(CategoryRequest request);
+    CategoryResponse addCategory(CreateCategoryRequest request);
+
+    Page<CategoryAdminResponse> getCategoriesForAdmin(Pageable pageable);
 }
