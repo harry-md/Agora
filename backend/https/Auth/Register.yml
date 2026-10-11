@@ -11,16 +11,16 @@ http:
     data:
       - name: username
         type: text
-        value: user
+        value: admin
       - name: password
         type: text
         value: "1"
       - name: fullName
         type: text
-        value: ABC
+        value: ADMIN
       - name: email
         type: text
-        value: user@gmail.com
+        value: admin@gmail.com
       - name: avatar
         type: file
         value:

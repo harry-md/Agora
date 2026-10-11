@@ -8,7 +8,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "product_details")
-class ProductDetail {
+public class ProductDetail {
 
     @Id
     @Column(nullable = false)
@@ -34,9 +33,5 @@ class ProductDetail {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private Map<String, Object> spec;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private List<String> images;
+    private List<ProductImage> images;
 }

@@ -24,6 +24,7 @@ import java.util.UUID;
             @UniqueConstraint(name = "uq_users_email", columnNames = "email")
         })
 public class User {
+
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)

@@ -76,7 +76,8 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/health")
                         .permitAll()
                         .anyRequest()
-                        .hasRole("ADMIN"));
+                        .hasRole("ADMIN"))
+                .addFilterBefore(new JwtFilter(tokenService), BasicAuthenticationFilter.class);
         return http.build();
     }
 
