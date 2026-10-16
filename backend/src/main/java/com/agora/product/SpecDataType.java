@@ -1,4 +1,4 @@
-package com.agora.product.domain;
+package com.agora.product;
 
 public enum SpecDataType {
     TEXT,

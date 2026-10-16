@@ -17,12 +17,14 @@ import com.agora.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 class AddressServiceImpl implements AddressService {
+
     private final AddressRepository addressRepository;
     private final WardRepository wardRepository;
     private final ProvinceRepository provinceRepository;
@@ -35,6 +37,7 @@ class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Transactional
     public UUID addAddress(AddressRequest request) {
         Address address = addressMapper.toEntity(request);
         applyLocation(address, request);
@@ -42,6 +45,7 @@ class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Transactional
     public AddressResponse updateAddress(UUID id, AddressRequest request) {
         Address address = getAddressOrThrow(id);
         addressMapper.updateEntity(request, address);
@@ -51,7 +55,7 @@ class AddressServiceImpl implements AddressService {
 
     private Address getAddressOrThrow(UUID id) {
         return addressRepository
-                .findById(id)
+                .findWithInfoById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy địa chỉ"));
     }
 
@@ -72,6 +76,7 @@ class AddressServiceImpl implements AddressService {
         if (!province.getCountry().getId().equals(country.getId())) {
             throw new BadRequestException("Tỉnh/thành phố không thuộc quốc gia đã chọn");
         }
+
         address.setWard(ward);
         address.setProvince(province);
         address.setCountry(country);

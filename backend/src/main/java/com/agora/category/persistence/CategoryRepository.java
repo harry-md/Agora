@@ -32,9 +32,9 @@ public interface CategoryRepository
         )
         FROM Category c
         """, countQuery = """
-                SELECT COUNT(c)
-                FROM Category c
-                """)
+            SELECT COUNT(c)
+            FROM Category c
+            """)
     Page<CategoryAdminResponse> findAllAdmin(Pageable pageable);
 
     @Query(value = """
@@ -47,8 +47,8 @@ public interface CategoryRepository
         FROM Category c
         WHERE c.active = true
         """, countQuery = """
-                SELECT COUNT(c)
-                FROM Category c
-                """)
+            SELECT COUNT(c)
+            FROM Category c
+            """)
     Page<CategoryResponse> findAllActive(Pageable pageable);
 }

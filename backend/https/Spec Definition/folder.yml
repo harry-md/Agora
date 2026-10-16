@@ -1,0 +1,7 @@
+info:
+  name: Spec Definition
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit

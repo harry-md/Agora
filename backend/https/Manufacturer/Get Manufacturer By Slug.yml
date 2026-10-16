@@ -1,0 +1,9 @@
+info:
+  name: Get Manufacturer By Slug
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: http://localhost:8080/api/manufacturers/{{manufacturerSlug}}
+  auth: inherit

@@ -1,5 +1,7 @@
 package com.agora.product.domain;
 
+import com.agora.product.SpecDataType;
+
 import jakarta.persistence.*;
 
 import lombok.*;

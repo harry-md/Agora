@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface CategorySpecRepository extends JpaRepository<CategorySpec, UUID> {
     List<CategorySpec> findAllByCategoryId(UUID categoryId);
+
+    boolean existsByCategoryIdAndSpecDefinitionId(UUID categoryId, UUID specDefinitionId);
 }

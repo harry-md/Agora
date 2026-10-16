@@ -1,0 +1,18 @@
+{
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 80,
+  "singleQuote": false,
+  "jsxSingleQuote": false,
+  "quoteProps": "as-needed",
+  "trailingComma": "all",
+  "semi": true,
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "singleAttributePerLine": false,
+  "ignorePatterns": [],
+  "$schema": "/home/harry/.local/share/nvim/mason/packages/oxfmt/node_modules/oxfmt/configuration_schema.json",
+  "sortPackageJson": false,
+  "endOfLine": "lf"
+}
