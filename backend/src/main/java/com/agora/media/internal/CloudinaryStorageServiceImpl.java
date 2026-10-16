@@ -59,14 +59,14 @@ class CloudinaryStorageServiceImpl implements ImageStorageService {
                     .uploader()
                     .upload(file.getBytes(), ObjectUtils.asMap("resource_type", "image"));
             return res.get("secure_url").toString();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             log.error("Error when upload image to Cloudinary {}", file.getName(), ex);
             throw new BadRequestException("Lỗi khi upload ảnh");
         }
     }
 
     @Override
-    public void delete(String url) {
+    public void delete(String url) throws IOException {
         if (url == null || defaultUrls.contains(url)) {
             return;
         }
@@ -77,10 +77,6 @@ class CloudinaryStorageServiceImpl implements ImageStorageService {
         }
         String publicId = path.substring(0, path.lastIndexOf("."));
 
-        try {
-            cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "image"));
-        } catch (IOException ex) {
-            log.error("Error when delete image {}", url, ex);
-        }
+        cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "image"));
     }
 }

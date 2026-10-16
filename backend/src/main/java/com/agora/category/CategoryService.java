@@ -5,11 +5,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
 
-    CategoryResponse getCategoryBySlug(String slug);
+    CategoryResponse getBySlug(String slug);
 
-    Page<CategoryResponse> getCategories(Pageable pageable);
+    Page<CategoryResponse> getAll(Pageable pageable);
 
-    CategoryResponse addCategory(CreateCategoryRequest request);
+    CategoryResponse create(CreateCategoryRequest request);
 
-    Page<CategoryAdminResponse> getCategoriesForAdmin(Pageable pageable);
+    Page<CategoryAdminResponse> getAllForAdmin(Pageable pageable);
 }

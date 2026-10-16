@@ -1,0 +1,25 @@
+info:
+  name: Create Spec Definition
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/spec-definitions
+  body:
+    type: json
+    data: |-
+      {
+        "code": "ram",
+        "name": "RAM",
+        "dataType": "NUMBER",
+        "unit": "GB"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
