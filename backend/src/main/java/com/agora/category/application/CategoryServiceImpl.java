@@ -22,6 +22,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
 import java.text.Normalizer;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -94,5 +95,10 @@ class CategoryServiceImpl implements CategoryService {
     @Cacheable(cacheNames = "admin-categories")
     public Page<CategoryAdminResponse> getAllForAdmin(Pageable pageable) {
         return categoryRepository.findAllAdmin(pageable);
+    }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return categoryRepository.existsById(id);
     }
 }
