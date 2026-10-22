@@ -14,4 +14,6 @@ public interface ManufacturerService {
     ManufacturerResponse create(CreateManufacturerRequest request);
 
     ManufacturerAdminResponse update(UUID id, UpdateManufacturerRequest request);
+
+    boolean existsById(UUID id);
 }

@@ -1,0 +1,24 @@
+info:
+  name: Create Spec Definition Color
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:8080/api/spec-definitions
+  body:
+    type: json
+    data: |-
+      {
+        "code": "color",
+        "name": "Màu sắc",
+        "dataType": "TEXT"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

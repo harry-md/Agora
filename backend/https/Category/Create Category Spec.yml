@@ -5,15 +5,15 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/api/categories/{{categoryId}}/filters
+  url: http://localhost:8080/api/categories/01a1244e-2632-71ba-9bab-50393bbdd263/filters
   body:
     type: json
     data: |-
       {
-        "specDefinitionId": "{{specDefinitionId}}",
+        "specDefinitionId": "01a161d1-9207-7dba-a657-87259f18cc5d",
         "required": true,
         "filterable": true,
-        "displayOrder": 1
+        "displayOrder": 2
       }
   auth: inherit
 

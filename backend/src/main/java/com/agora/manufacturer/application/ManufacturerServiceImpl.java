@@ -125,6 +125,11 @@ class ManufacturerServiceImpl implements ManufacturerService {
         return result.response();
     }
 
+    @Override
+    public boolean existsById(UUID id) {
+        return manufacturerRepository.existsById(id);
+    }
+
     private void validateCountry(UUID countryId) {
         if (!countryService.existsById(countryId)) {
             throw new ResourceNotFoundException("Không tìm thấy quốc gia");

@@ -1,0 +1,47 @@
+info:
+  name: Untitled
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/products
+  body:
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: iPhone 15 Pro Max 256GB
+      - name: manufacturerId
+        type: text
+        value: 01a161c3-01a2-7a8f-a1ce-31b11e3924aa
+      - name: categoryId
+        type: text
+        value: 01a1244e-2632-71ba-9bab-50393bbdd263
+      - name: thumbnail
+        type: file
+        value:
+          - /Users/vanlong/Downloads/iphone15prm.jpg
+      - name: description
+        type: text
+        value: Titan tự nhiên, chip A17 Pro, camera 48MP, USB-C.
+      - name: specs[0].specDefinitionId
+        type: text
+        value: 01a161c7-14d9-786e-ab72-2493c2ddb93e
+      - name: specs[0].value
+        type: text
+        value: "8"
+      - name: specs[1].specDefinitionId
+        type: text
+        value: 01a161d1-9207-7dba-a657-87259f18cc5d
+      - name: specs[1].value
+        type: text
+        value: Titan tự nhiên
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

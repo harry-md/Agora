@@ -14,7 +14,6 @@ import com.agora.manufacturer.domain.Manufacturer;
 import com.agora.manufacturer.persistence.ManufacturerRepository;
 import com.agora.media.ImageStorageService;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,7 +52,6 @@ class ManufacturerServiceImplTest {
     private final MockMultipartFile logo =
             new MockMultipartFile("logo", "logo.png", "image/png", new byte[] {1});
 
-    @BeforeEach
     void setUp() {
         when(transactions.getTransaction(any())).thenReturn(new SimpleTransactionStatus());
         when(countries.existsById(countryId)).thenReturn(true);
