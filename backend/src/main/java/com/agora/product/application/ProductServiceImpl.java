@@ -62,13 +62,14 @@ class ProductServiceImpl implements ProductService {
         List<ValidateSpec> specs = validateSpecs(request.specs());
         List<String> uploadedUrls = new ArrayList<>();
         try {
-            String thumbnailUrl = upload(request.thumbnail(), uploadedUrls);
-            List<String> imageUrls = new ArrayList<>();
 
-            for (MultipartFile image : request.images()) {
-                imageUrls.add(upload(image, uploadedUrls));
-            }
+            List<MultipartFile> files = new ArrayList<>();
+            files.add(request.thumbnail());
+            files.addAll(request.images());
 
+            List<String> urls = imageStorageService.uploadAll(files, uploadedUrls);
+            String thumbnailUrl = urls.getFirst();
+            List<String> imageUrls = urls.subList(1, urls.size());
             return transactionTemplate.execute(
                     status -> saveProduct(request, baseSlug, thumbnailUrl, imageUrls, specs));
         } catch (RuntimeException ex) {
@@ -77,6 +78,10 @@ class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * Validating incoming SpecValueRequest by checking duplicate,
+     * get entities from DB and mapping to ValidateSpec records
+     **/
     private List<ValidateSpec> validateSpecs(List<CreateProductRequest.SpecValueRequest> requests) {
         Set<UUID> ids = new HashSet<>();
         for (var spec : requests) {
@@ -111,20 +116,21 @@ class ProductServiceImpl implements ProductService {
                 }
             }
             case BOOLEAN -> {
-                if (raw.equalsIgnoreCase("true")) yield Boolean.TRUE;
-                if (raw.equalsIgnoreCase("false")) yield Boolean.FALSE;
+                if (raw.equalsIgnoreCase("true")) {
+                    yield Boolean.TRUE;
+                } else if (raw.equalsIgnoreCase("false")) {
+                    yield Boolean.FALSE;
+                }
                 throw new BadRequestException(
                         "Thông số '" + definition.getName() + "' phải là true hoặc false");
             }
         };
     }
 
-    private String upload(MultipartFile file, List<String> uploadedUrls) {
-        String url = imageStorageService.upload(file);
-        uploadedUrls.add(url);
-        return url;
-    }
-
+    /**
+     * Build Product obj from CreateProductRequest
+     * Build ProductDetail, ProductSpecValue then save all
+     */
     private ProductResponse saveProduct(
             CreateProductRequest request,
             String baseSlug,
@@ -153,6 +159,9 @@ class ProductServiceImpl implements ProductService {
         return productMapper.toResponse(saved, detail, specResponses);
     }
 
+    /**
+     * Use to create ProductSpecValue object
+     */
     private ProductSpecValue toSpecValue(Product product, ValidateSpec spec) {
         var builder = ProductSpecValue.builder().product(product).specDefinition(spec.definition());
         // The DB CHECK requires exactly one of the three value columns to be non-null
