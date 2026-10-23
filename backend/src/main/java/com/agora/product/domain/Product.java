@@ -58,4 +58,8 @@ public class Product {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Instant createdAt;
+
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
 }

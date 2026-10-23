@@ -17,7 +17,7 @@ public record CreateProductRequest(
         @NotNull MultipartFile thumbnail,
         String description,
         List<MultipartFile> images,
-        @Valid List<SpecValueRequest> specs) {
+        List<@Valid SpecValueRequest> specs) {
     public CreateProductRequest {
         name = name == null ? null : name.strip();
         description = description == null || description.isBlank() ? null : description.strip();
