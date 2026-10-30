@@ -1,6 +1,7 @@
 package com.agora.product.application;
 
 import com.agora.product.CreateProductRequest;
+import com.agora.product.ProductDetailResponse;
 import com.agora.product.ProductResponse;
 import com.agora.product.ProductSummaryResponse;
 import com.agora.product.domain.Product;
@@ -29,6 +30,14 @@ public interface ProductMapper {
     @Mapping(target = "images", source = "detail.images")
     ProductResponse toResponse(
             Product product, ProductDetail detail, List<ProductResponse.SpecValueResponse> specs);
+
+    @Mapping(target = "id", source = "product.id")
+    @Mapping(target = "description", source = "detail.description")
+    @Mapping(target = "images", source = "detail.images")
+    ProductDetailResponse toDetailResponse(
+            Product product,
+            ProductDetail productDetail,
+            List<ProductResponse.SpecValueResponse> specs);
 
     ProductSummaryResponse toSummary(Product product);
 

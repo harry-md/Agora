@@ -84,6 +84,32 @@ class ProductServiceImpl implements ProductService {
         return productRepository.findAll(specification, pageable).map(productMapper::toSummary);
     }
 
+    @Override
+    public ProductDetailResponse getBySlug(String slug) {
+        Product product = productRepository
+                .findBySlugAndActiveTrue(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
+        ProductDetail detail = productDetailRepository
+                .findById(product.getId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Không tìm thấy chi tiết sản phẩm"));
+        List<ProductResponse.SpecValueResponse> specs =
+                productSpecValueRepository.findByProductId(product.getId()).stream()
+                        .map(v -> new ProductResponse.SpecValueResponse(
+                                specDefinitionMapper.toResponse(v.getSpecDefinition()),
+                                specValueOf(v)))
+                        .toList();
+        return productMapper.toDetailResponse(product, detail, specs);
+    }
+
+    private Object specValueOf(ProductSpecValue v) {
+        return switch (v.getSpecDefinition().getDataType()) {
+            case TEXT -> v.getTextValue();
+            case NUMBER -> v.getNumberValue();
+            case BOOLEAN -> v.getBooleanValue();
+        };
+    }
+
     /**
      * Validating incoming SpecValueRequest by checking duplicate,
      * get entities from DB and mapping to ValidateSpec records

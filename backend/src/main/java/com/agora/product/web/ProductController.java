@@ -36,4 +36,9 @@ public class ProductController {
                     Pageable pageable) {
         return ResponseEntity.ok(productService.getAllProducts(request, pageable));
     }
+
+    @GetMapping("/{slug}")
+    public ResponseEntity<ProductDetailResponse> getProductDetail(@PathVariable String slug) {
+        return ResponseEntity.ok(productService.getBySlug(slug));
+    }
 }

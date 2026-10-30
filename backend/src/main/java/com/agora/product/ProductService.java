@@ -7,4 +7,6 @@ public interface ProductService {
     ProductResponse create(CreateProductRequest request);
 
     Page<ProductSummaryResponse> getAllProducts(ProductFilterRequest request, Pageable pageable);
+
+    ProductDetailResponse getBySlug(String slug);
 }
