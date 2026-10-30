@@ -5,18 +5,16 @@ import com.agora.exception.BadRequestException;
 import com.agora.exception.ResourceNotFoundException;
 import com.agora.manufacturer.ManufacturerService;
 import com.agora.media.ImageStorageService;
-import com.agora.product.CreateProductRequest;
-import com.agora.product.ProductResponse;
-import com.agora.product.ProductService;
+import com.agora.product.*;
 import com.agora.product.domain.*;
-import com.agora.product.persistence.ProductDetailRepository;
-import com.agora.product.persistence.ProductRepository;
-import com.agora.product.persistence.ProductSpecValueRepository;
-import com.agora.product.persistence.SpecDefinitionRepository;
+import com.agora.product.persistence.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,6 +74,40 @@ class ProductServiceImpl implements ProductService {
             cleanedupUploadImages(uploadedUrls, ex);
             throw ex;
         }
+    }
+
+    @Override
+    public Page<ProductSummaryResponse> getAllProducts(
+            ProductFilterRequest request, Pageable pageable) {
+        Specification<Product> specification =
+                ProductSpecification.isActive(true).and(ProductSpecification.buildFilter(request));
+        return productRepository.findAll(specification, pageable).map(productMapper::toSummary);
+    }
+
+    @Override
+    public ProductDetailResponse getBySlug(String slug) {
+        Product product = productRepository
+                .findBySlugAndActiveTrue(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
+        ProductDetail detail = productDetailRepository
+                .findById(product.getId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Không tìm thấy chi tiết sản phẩm"));
+        List<ProductResponse.SpecValueResponse> specs =
+                productSpecValueRepository.findByProductId(product.getId()).stream()
+                        .map(v -> new ProductResponse.SpecValueResponse(
+                                specDefinitionMapper.toResponse(v.getSpecDefinition()),
+                                specValueOf(v)))
+                        .toList();
+        return productMapper.toDetailResponse(product, detail, specs);
+    }
+
+    private Object specValueOf(ProductSpecValue v) {
+        return switch (v.getSpecDefinition().getDataType()) {
+            case TEXT -> v.getTextValue();
+            case NUMBER -> v.getNumberValue();
+            case BOOLEAN -> v.getBooleanValue();
+        };
     }
 
     /**

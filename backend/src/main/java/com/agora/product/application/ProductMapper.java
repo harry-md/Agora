@@ -1,7 +1,9 @@
 package com.agora.product.application;
 
 import com.agora.product.CreateProductRequest;
+import com.agora.product.ProductDetailResponse;
 import com.agora.product.ProductResponse;
+import com.agora.product.ProductSummaryResponse;
 import com.agora.product.domain.Product;
 import com.agora.product.domain.ProductDetail;
 import com.agora.product.domain.ProductImage;
@@ -20,6 +22,7 @@ public interface ProductMapper {
     @Mapping(target = "ratingCount", ignore = true)
     @Mapping(target = "soldCount", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "active", ignore = true)
     Product toEntity(CreateProductRequest request);
 
     @Mapping(target = "id", source = "product.id")
@@ -27,6 +30,16 @@ public interface ProductMapper {
     @Mapping(target = "images", source = "detail.images")
     ProductResponse toResponse(
             Product product, ProductDetail detail, List<ProductResponse.SpecValueResponse> specs);
+
+    @Mapping(target = "id", source = "product.id")
+    @Mapping(target = "description", source = "detail.description")
+    @Mapping(target = "images", source = "detail.images")
+    ProductDetailResponse toDetailResponse(
+            Product product,
+            ProductDetail productDetail,
+            List<ProductResponse.SpecValueResponse> specs);
+
+    ProductSummaryResponse toSummary(Product product);
 
     default String toImageUrl(ProductImage image) {
         return image.url();
