@@ -8,6 +8,7 @@ import com.agora.media.ImageStorageService;
 import com.agora.product.*;
 import com.agora.product.domain.*;
 import com.agora.product.persistence.*;
+import com.agora.warranty.WarrantyPolicyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ class ProductServiceImpl implements ProductService {
     private final ImageStorageService imageStorageService;
     private final CategoryService categoryService;
     private final ManufacturerService manufacturerService;
+    private final WarrantyPolicyService warrantyPolicyService;
     private final ProductMapper productMapper;
     private final TransactionTemplate transactionTemplate;
     private final SpecDefinitionMapper specDefinitionMapper;
@@ -44,12 +46,15 @@ class ProductServiceImpl implements ProductService {
     private record ValidateSpec(SpecDefinition definition, Object value) {}
 
     @Override
-    public ProductResponse create(CreateProductRequest request) {
-        if (!manufacturerService.existsById(request.manufacturerId())) {
+    public ProductResponse createProduct(CreateProductRequest request) {
+        if (!this.manufacturerService.existsById(request.manufacturerId())) {
             throw new ResourceNotFoundException("Không tìm thấy nhà sản xuất");
         }
-        if (!categoryService.existsById(request.categoryId())) {
+        if (!this.categoryService.existsById(request.categoryId())) {
             throw new ResourceNotFoundException("Không tìm thấy danh mục");
+        }
+        if (!this.warrantyPolicyService.existsById(request.warrantyPolicyId())) {
+            throw new ResourceNotFoundException("Không tìm thấy chính sách bảo hành");
         }
 
         if (request.thumbnail() == null || request.thumbnail().isEmpty()) {
@@ -65,10 +70,10 @@ class ProductServiceImpl implements ProductService {
             files.add(request.thumbnail());
             files.addAll(request.images());
 
-            List<String> urls = imageStorageService.uploadAll(files, uploadedUrls);
+            List<String> urls = this.imageStorageService.uploadAll(files, uploadedUrls);
             String thumbnailUrl = urls.getFirst();
             List<String> imageUrls = urls.subList(1, urls.size());
-            return transactionTemplate.execute(
+            return this.transactionTemplate.execute(
                     status -> saveProduct(request, baseSlug, thumbnailUrl, imageUrls, specs));
         } catch (RuntimeException ex) {
             cleanedupUploadImages(uploadedUrls, ex);

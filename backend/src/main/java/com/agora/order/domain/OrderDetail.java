@@ -35,6 +35,9 @@ public class OrderDetail {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal price;
 
+    @Column(nullable = false)
+    private int quantity;
+
     @Column
     private Instant deliveredAt;
 

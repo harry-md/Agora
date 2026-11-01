@@ -26,7 +26,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductResponse> create(
             @Valid @ModelAttribute CreateProductRequest request) {
-        return new ResponseEntity<>(productService.create(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.createProduct(request), HttpStatus.CREATED);
     }
 
     @GetMapping

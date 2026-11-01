@@ -22,6 +22,7 @@ public interface ProductMapper {
     @Mapping(target = "soldCount", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "active", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Product toEntity(CreateProductRequest request);
 
     @Mapping(target = "id", source = "product.id")

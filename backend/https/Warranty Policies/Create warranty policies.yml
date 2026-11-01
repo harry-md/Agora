@@ -1,0 +1,25 @@
+info:
+  name: Create warranty policies
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/warranty-policies
+  body:
+    type: json
+    data: |-
+      {
+        "code": "LAPTOP_STD",
+        "title": "Chính sách bảo hành tiêu chuẩn",
+        "effectiveFrom": "2026-11-02T00:00:00Z",
+        "documentKey": "https://drive.google.com/file/d/1Ay5ZnF4raw3qXzQ4HIr71ObS7n7gtUfm/view?usp=sharing"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

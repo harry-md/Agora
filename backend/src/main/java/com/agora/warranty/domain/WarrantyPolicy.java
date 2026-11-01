@@ -42,7 +42,10 @@ public class WarrantyPolicy {
     @Column(nullable = false)
     private Instant effectiveFrom;
 
-    @Column(nullable = false)
+    /**
+     * lưu path tới file bảo hành PDF, DOCX, PNG, ... trên Google Drive hoặc Cloudflare R2
+     */
+    @Column(nullable = false, length = 500)
     private String documentKey;
 
     @Column(nullable = false, updatable = false)
