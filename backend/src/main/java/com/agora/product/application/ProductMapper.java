@@ -37,7 +37,7 @@ public interface ProductMapper {
     @Mapping(target = "images", source = "detail.images")
     ProductDetailResponse toDetailResponse(
             Product product,
-            ProductDetail productDetail,
+            ProductDetail detail,
             List<ProductResponse.SpecValueResponse> specs);
 
     ProductSummaryResponse toSummary(Product product);
