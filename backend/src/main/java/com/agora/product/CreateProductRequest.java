@@ -1,12 +1,13 @@
 package com.agora.product;
 
+import com.agora.product.domain.WarrantyDurationUnit;
+
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,10 @@ public record CreateProductRequest(
         @NotNull UUID categoryId,
         @NotNull MultipartFile thumbnail,
         String description,
+        @NotNull @DecimalMin("0") BigDecimal price,
+        @NotNull UUID warrantyPolicyId,
+        @Positive Integer warrantyDurationValue,
+        WarrantyDurationUnit warrantyDurationUnit,
         List<MultipartFile> images,
         List<@Valid SpecValueRequest> specs) {
     public CreateProductRequest {
@@ -26,6 +31,8 @@ public record CreateProductRequest(
                 : images.stream().filter(f -> f != null && !f.isEmpty()).toList();
         ;
         specs = specs == null ? List.of() : specs;
+        warrantyDurationUnit =
+                warrantyDurationUnit == null ? WarrantyDurationUnit.MONTH : warrantyDurationUnit;
     }
 
     public record SpecValueRequest(

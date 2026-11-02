@@ -71,6 +71,18 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/categories")
                         .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/warranty-policies")
+                        .hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/warranty-policies/*/versions",
+                                "/api/warranty-policies/admin")
+                        .hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/warranty-policies/*",
+                                "/api/warranty-policies/*/versions/*")
+                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/*")
                         .permitAll()
                         .requestMatchers("/api/manufacturers/admin")

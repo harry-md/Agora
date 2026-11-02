@@ -8,6 +8,7 @@ import com.agora.media.ImageStorageService;
 import com.agora.product.*;
 import com.agora.product.domain.*;
 import com.agora.product.persistence.*;
+import com.agora.warranty.WarrantyPolicyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ class ProductServiceImpl implements ProductService {
     private final ImageStorageService imageStorageService;
     private final CategoryService categoryService;
     private final ManufacturerService manufacturerService;
+    private final WarrantyPolicyService warrantyPolicyService;
     private final ProductMapper productMapper;
     private final TransactionTemplate transactionTemplate;
     private final SpecDefinitionMapper specDefinitionMapper;
@@ -50,6 +52,9 @@ class ProductServiceImpl implements ProductService {
         }
         if (!categoryService.existsById(request.categoryId())) {
             throw new ResourceNotFoundException("Không tìm thấy danh mục");
+        }
+        if (!warrantyPolicyService.existsById(request.warrantyPolicyId())) {
+            throw new ResourceNotFoundException("Không tìm thấy chính sách bảo hành");
         }
 
         if (request.thumbnail() == null || request.thumbnail().isEmpty()) {
@@ -77,8 +82,7 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductSummaryResponse> getAllProducts(
-            ProductFilterRequest request, Pageable pageable) {
+    public Page<ProductSummaryResponse> getAll(ProductFilterRequest request, Pageable pageable) {
         Specification<Product> specification =
                 ProductSpecification.isActive(true).and(ProductSpecification.buildFilter(request));
         return productRepository.findAll(specification, pageable).map(productMapper::toSummary);

@@ -11,7 +11,7 @@ http:
     data:
       - name: name
         type: text
-        value: iPhone 15 Pro Max 256GB
+        value: iPhone 16 Pro Max 256GB
       - name: manufacturerId
         type: text
         value: 01a161c3-01a2-7a8f-a1ce-31b11e3924aa
@@ -21,10 +21,10 @@ http:
       - name: thumbnail
         type: file
         value:
-          - /Users/vanlong/Downloads/iphone15prm.jpg
+          - /Users/vanlong/Downloads/ip16prm.jpg
       - name: description
         type: text
-        value: Titan tự nhiên, chip A17 Pro, camera 48MP, USB-C.
+        value: Titan đen, chip A18 Pro, camera 48MP, USB-C.
       - name: specs[0].specDefinitionId
         type: text
         value: 01a161c7-14d9-786e-ab72-2493c2ddb93e
@@ -36,7 +36,13 @@ http:
         value: 01a161d1-9207-7dba-a657-87259f18cc5d
       - name: specs[1].value
         type: text
-        value: Titan tự nhiên
+        value: Titan đen
+      - name: images
+        type: file
+        value:
+          - /Users/vanlong/Downloads/front-ip16prm.png
+          - /Users/vanlong/Downloads/back-ip16prm.png
+          - /Users/vanlong/Downloads/edge-ip16prm.png
   auth: inherit
 
 settings:

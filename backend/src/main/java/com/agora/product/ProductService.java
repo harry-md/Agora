@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 public interface ProductService {
     ProductResponse create(CreateProductRequest request);
 
-    Page<ProductSummaryResponse> getAllProducts(ProductFilterRequest request, Pageable pageable);
+    Page<ProductSummaryResponse> getAll(ProductFilterRequest request, Pageable pageable);
 
-    ProductDetailResponse getBySlug(String slug);
 }
