@@ -91,7 +91,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/manufacturers", "/api/manufacturers/**")
                         .hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/products")
+                        .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/*")
                         .permitAll()
                         .requestMatchers("/actuator/health")
                         .permitAll()

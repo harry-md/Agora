@@ -7,4 +7,5 @@ public interface ProductService {
     ProductResponse create(CreateProductRequest request);
 
     Page<ProductSummaryResponse> getAll(ProductFilterRequest request, Pageable pageable);
+
 }
