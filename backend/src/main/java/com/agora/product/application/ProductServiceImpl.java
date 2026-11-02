@@ -46,14 +46,14 @@ class ProductServiceImpl implements ProductService {
     private record ValidateSpec(SpecDefinition definition, Object value) {}
 
     @Override
-    public ProductResponse createProduct(CreateProductRequest request) {
-        if (!this.manufacturerService.existsById(request.manufacturerId())) {
+    public ProductResponse create(CreateProductRequest request) {
+        if (!manufacturerService.existsById(request.manufacturerId())) {
             throw new ResourceNotFoundException("Không tìm thấy nhà sản xuất");
         }
-        if (!this.categoryService.existsById(request.categoryId())) {
+        if (!categoryService.existsById(request.categoryId())) {
             throw new ResourceNotFoundException("Không tìm thấy danh mục");
         }
-        if (!this.warrantyPolicyService.existsById(request.warrantyPolicyId())) {
+        if (!warrantyPolicyService.existsById(request.warrantyPolicyId())) {
             throw new ResourceNotFoundException("Không tìm thấy chính sách bảo hành");
         }
 
@@ -70,10 +70,10 @@ class ProductServiceImpl implements ProductService {
             files.add(request.thumbnail());
             files.addAll(request.images());
 
-            List<String> urls = this.imageStorageService.uploadAll(files, uploadedUrls);
+            List<String> urls = imageStorageService.uploadAll(files, uploadedUrls);
             String thumbnailUrl = urls.getFirst();
             List<String> imageUrls = urls.subList(1, urls.size());
-            return this.transactionTemplate.execute(
+            return transactionTemplate.execute(
                     status -> saveProduct(request, baseSlug, thumbnailUrl, imageUrls, specs));
         } catch (RuntimeException ex) {
             cleanedupUploadImages(uploadedUrls, ex);
@@ -82,8 +82,7 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductSummaryResponse> getAllProducts(
-            ProductFilterRequest request, Pageable pageable) {
+    public Page<ProductSummaryResponse> getAll(ProductFilterRequest request, Pageable pageable) {
         Specification<Product> specification =
                 ProductSpecification.isActive(true).and(ProductSpecification.buildFilter(request));
         return productRepository.findAll(specification, pageable).map(productMapper::toSummary);

@@ -10,10 +10,10 @@ http:
     type: json
     data: |-
       {
-        "code": "LAPTOP_STD",
-        "title": "Chính sách bảo hành tiêu chuẩn",
+        "code": "LAPTOP_ECO",
+        "title": "Chính sách bảo hành tiết kiệm",
         "effectiveFrom": "2026-11-02T00:00:00Z",
-        "documentKey": "https://drive.google.com/file/d/1Ay5ZnF4raw3qXzQ4HIr71ObS7n7gtUfm/view?usp=sharing"
+        "documentKey": "https://drive.google.com/file/d/1y5cihLAx1r_h_5ZGJySCKwOPMHZ15xG9/view?usp=sharing"
       }
   auth: inherit
 

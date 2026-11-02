@@ -26,7 +26,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductResponse> create(
             @Valid @ModelAttribute CreateProductRequest request) {
-        return new ResponseEntity<>(productService.createProduct(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.create(request), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -34,6 +34,6 @@ public class ProductController {
             @Valid @ModelAttribute ProductFilterRequest request,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable) {
-        return ResponseEntity.ok(productService.getAllProducts(request, pageable));
+        return ResponseEntity.ok(productService.getAll(request, pageable));
     }
 }

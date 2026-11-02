@@ -25,24 +25,23 @@ public class WarrantyPolicyController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<WarrantyPolicyResponse> create(
             @Valid @RequestBody CreateWarrantyPolicyRequest request) {
-        return new ResponseEntity<>(
-                this.warrantyPolicyService.createWarrantyPolicy(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(warrantyPolicyService.create(request), HttpStatus.CREATED);
     }
 
     @GetMapping("/{code}")
     public ResponseEntity<WarrantyPolicyResponse> getCurrent(@PathVariable String code) {
-        return ResponseEntity.ok(this.warrantyPolicyService.getCurrentByCode(code));
+        return ResponseEntity.ok(warrantyPolicyService.getCurrentVersion(code));
     }
 
     @GetMapping("/{code}/versions/{version}")
     public ResponseEntity<WarrantyPolicyResponse> getByVersion(
             @PathVariable String code, @PathVariable int version) {
-        return ResponseEntity.ok(this.warrantyPolicyService.getByCodeAndVersion(code, version));
+        return ResponseEntity.ok(warrantyPolicyService.getByVersion(code, version));
     }
 
     @GetMapping("/{code}/versions")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<WarrantyPolicyResponse>> listVersions(@PathVariable String code) {
-        return ResponseEntity.ok(this.warrantyPolicyService.getAllByCode(code));
+        return ResponseEntity.ok(warrantyPolicyService.getAll(code));
     }
 }

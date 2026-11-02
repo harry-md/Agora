@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface WarrantyPolicyService {
-    WarrantyPolicyResponse createWarrantyPolicy(CreateWarrantyPolicyRequest request);
+    WarrantyPolicyResponse create(CreateWarrantyPolicyRequest request);
 
-    WarrantyPolicyResponse getCurrentByCode(String code);
+    WarrantyPolicyResponse getCurrentVersion(String code);
 
-    WarrantyPolicyResponse getByCodeAndVersion(String code, int version);
+    WarrantyPolicyResponse getByVersion(String code, int version);
 
-    List<WarrantyPolicyResponse> getAllByCode(String code);
+    List<WarrantyPolicyResponse> getAll(String code);
 
     boolean existsById(UUID id);
 }
