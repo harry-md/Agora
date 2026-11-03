@@ -8,4 +8,5 @@ public interface ProductService {
 
     Page<ProductSummaryResponse> getAll(ProductFilterRequest request, Pageable pageable);
 
+    ProductDetailResponse getBySlug(String slug);
 }

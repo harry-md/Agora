@@ -21,7 +21,7 @@ http:
       - name: thumbnail
         type: file
         value:
-          - /Users/vanlong/Downloads/ip16prm.jpg
+          - /Users/vanlong/Downloads/photo_2024-10-02_13-59-00_1_1_1.jpg
       - name: description
         type: text
         value: Titan đen, chip A18 Pro, camera 48MP, USB-C.
@@ -40,9 +40,16 @@ http:
       - name: images
         type: file
         value:
-          - /Users/vanlong/Downloads/front-ip16prm.png
-          - /Users/vanlong/Downloads/back-ip16prm.png
-          - /Users/vanlong/Downloads/edge-ip16prm.png
+          - /Users/vanlong/Downloads/photo_2024-10-02_13-59-00_1_1_1.jpg
+      - name: price
+        type: text
+        value: "26490000"
+      - name: warrantyPolicyId
+        type: text
+        value: 01a195cc-fee5-7f0e-b280-459478cae619
+      - name: warrantyDurationValue
+        type: text
+        value: "12"
   auth: inherit
 
 settings:
