@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
@@ -40,5 +42,12 @@ public class ProductController {
     @GetMapping("/{slug}")
     public ResponseEntity<ProductDetailResponse> getProductDetail(@PathVariable String slug) {
         return ResponseEntity.ok(productService.getBySlug(slug));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        productService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

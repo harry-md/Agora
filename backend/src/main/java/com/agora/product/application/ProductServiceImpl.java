@@ -106,6 +106,16 @@ class ProductServiceImpl implements ProductService {
         return productMapper.toDetailResponse(product, detail, specs);
     }
 
+    @Override
+    public void delete(UUID id) {
+        Product product = productRepository
+                .findById(id)
+                .filter(Product::isActive)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
+        product.setActive(false);
+        productRepository.save(product);
+    }
+
     private Object specValueOf(ProductSpecValue v) {
         return switch (v.getSpecDefinition().getDataType()) {
             case TEXT -> v.getTextValue();
