@@ -1,0 +1,25 @@
+info:
+  name: Create warranty policies
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/warranty-policies
+  body:
+    type: json
+    data: |-
+      {
+        "code": "LAPTOP_ECO",
+        "title": "Chính sách bảo hành tiết kiệm",
+        "effectiveFrom": "2026-11-02T00:00:00Z",
+        "documentKey": "https://drive.google.com/file/d/1y5cihLAx1r_h_5ZGJySCKwOPMHZ15xG9/view?usp=sharing"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

@@ -13,8 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service
 @RequiredArgsConstructor
@@ -59,14 +63,14 @@ class CloudinaryStorageServiceImpl implements ImageStorageService {
                     .uploader()
                     .upload(file.getBytes(), ObjectUtils.asMap("resource_type", "image"));
             return res.get("secure_url").toString();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             log.error("Error when upload image to Cloudinary {}", file.getName(), ex);
             throw new BadRequestException("Lỗi khi upload ảnh");
         }
     }
 
     @Override
-    public void delete(String url) {
+    public void delete(String url) throws IOException {
         if (url == null || defaultUrls.contains(url)) {
             return;
         }
@@ -77,10 +81,42 @@ class CloudinaryStorageServiceImpl implements ImageStorageService {
         }
         String publicId = path.substring(0, path.lastIndexOf("."));
 
-        try {
-            cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "image"));
-        } catch (IOException ex) {
-            log.error("Error when delete image {}", url, ex);
+        cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "image"));
+    }
+
+    /**
+     * Using VirtualThread to upload synchronously every images because Cloudinary doesn't have batch upload.
+     */
+    @Override
+    public List<String> uploadAll(List<MultipartFile> files, List<String> uploadedUrls) {
+
+        List<Future<String>> futures;
+        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            futures = files.stream()
+                    .map(file -> executor.submit(() -> upload(file)))
+                    .toList();
         }
+
+        List<String> urls = new ArrayList<>();
+        RuntimeException failure = null;
+
+        for (Future<String> future : futures) {
+            if (future.state() == Future.State.SUCCESS) {
+                uploadedUrls.add(future.resultNow());
+                urls.add(future.resultNow());
+            } else {
+                RuntimeException cause = null;
+                if (future.state() == Future.State.FAILED
+                        && future.exceptionNow() instanceof RuntimeException re) {
+                    cause = re;
+                } else {
+                    cause = new BadRequestException("Failed to upload image");
+                }
+                if (failure == null) failure = cause;
+                else failure.addSuppressed(cause);
+            }
+        }
+        if (failure != null) throw failure;
+        return urls;
     }
 }

@@ -10,7 +10,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface AddressMapper {
-    //    AddressResponse toDTO(Address address);
 
     @Mapping(target = "ward", source = "ward.name")
     @Mapping(target = "province", source = "province.name")

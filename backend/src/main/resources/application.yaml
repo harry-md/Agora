@@ -3,6 +3,14 @@ spring:
     import: optional:file:.env.properties
   application:
     name: agora
+  cache:
+    type: caffeine
+    cache-names:
+      - category
+      - categories
+      - admin-categories
+      - manufacturer
+      - admin-manufacturers
 
   datasource:
     url: ${DB_URL}

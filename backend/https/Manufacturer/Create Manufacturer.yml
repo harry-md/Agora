@@ -1,0 +1,32 @@
+info:
+  name: Create Manufacturer
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:8080/api/manufacturers
+  body:
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: Apple
+      - name: logo
+        type: file
+        value:
+          - /Users/vanlong/Downloads/Apple_logo_black.jpg
+      - name: description
+        type: text
+        value: Apple Inc.
+      - name: countryId
+        type: text
+        value: 01a161c0-61cf-700f-b2b5-ef0723ed3287
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

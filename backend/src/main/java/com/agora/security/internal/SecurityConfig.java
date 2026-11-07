@@ -71,12 +71,33 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/categories")
                         .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/warranty-policies")
+                        .hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/warranty-policies/*/versions",
+                                "/api/warranty-policies/admin")
+                        .hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/warranty-policies/*",
+                                "/api/warranty-policies/*/versions/*")
+                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/*")
+                        .permitAll()
+                        .requestMatchers("/api/manufacturers/admin")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/manufacturers/*")
+                        .permitAll()
+                        .requestMatchers("/api/manufacturers", "/api/manufacturers/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/*")
                         .permitAll()
                         .requestMatchers("/actuator/health")
                         .permitAll()
                         .anyRequest()
-                        .hasRole("ADMIN"));
+                        .hasRole("ADMIN"))
+                .addFilterBefore(new JwtFilter(tokenService), BasicAuthenticationFilter.class);
         return http.build();
     }
 

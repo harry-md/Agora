@@ -17,8 +17,11 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
-@Table(name = "categories")
+@Table(
+        name = "categories",
+        uniqueConstraints = {@UniqueConstraint(name = "uq_categories_slug", columnNames = "slug")})
 public class Category {
+
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
@@ -45,8 +48,4 @@ public class Category {
     @Column(nullable = false)
     @UpdateTimestamp
     private Instant updatedAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Category parent;
 }

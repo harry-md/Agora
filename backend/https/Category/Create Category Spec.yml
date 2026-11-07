@@ -1,0 +1,25 @@
+info:
+  name: Create Category Spec
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://localhost:8080/api/categories/01a1244e-2632-71ba-9bab-50393bbdd263/filters
+  body:
+    type: json
+    data: |-
+      {
+        "specDefinitionId": "01a161d1-9207-7dba-a657-87259f18cc5d",
+        "required": true,
+        "filterable": true,
+        "displayOrder": 2
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

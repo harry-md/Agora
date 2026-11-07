@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
@@ -17,8 +18,11 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
-@Table(name = "products")
-class Product {
+@Table(
+        name = "products",
+        uniqueConstraints = {@UniqueConstraint(name = "uq_products_slug", columnNames = "slug")})
+public class Product {
+
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
@@ -32,7 +36,10 @@ class Product {
     private String slug;
 
     @Column(nullable = false)
-    private UUID manufacturer;
+    private UUID manufacturerId;
+
+    @Column(nullable = false)
+    private UUID categoryId;
 
     @Column(length = 500)
     private String thumbnail;
@@ -49,7 +56,29 @@ class Product {
     @Column(nullable = false)
     private int soldCount = 0;
 
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal price;
+
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Instant createdAt;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    private Instant updatedAt;
+
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
+
+    @Column(nullable = false)
+    private UUID warrantyPolicyId;
+
+    @Column
+    private Integer warrantyDurationValue;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private WarrantyDurationUnit warrantyDurationUnit = WarrantyDurationUnit.MONTH;
 }

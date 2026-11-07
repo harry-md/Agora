@@ -2,14 +2,23 @@ package com.agora.order.domain;
 
 import jakarta.persistence.*;
 
+import lombok.*;
+
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "order_details")
-class OrderDetail {
+public class OrderDetail {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
@@ -28,4 +37,24 @@ class OrderDetail {
 
     @Column(nullable = false)
     private int quantity;
+
+    @Column
+    private Instant deliveredAt;
+
+    @Column
+    private Integer warrantyDurationValue;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private WarrantyDurationUnit warrantyDurationUnit = WarrantyDurationUnit.MONTH;
+
+    @Column(nullable = false)
+    private UUID warrantyPolicyId;
+
+    @Column
+    private LocalDate warrantyStartsOn;
+
+    @Column
+    private LocalDate warrantyExpiresOn;
 }

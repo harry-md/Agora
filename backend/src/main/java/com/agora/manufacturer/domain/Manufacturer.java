@@ -14,13 +14,20 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
-@Table(name = "manufacturers")
-class Manufacturer {
+@Table(
+        name = "manufacturers",
+        uniqueConstraints = {@UniqueConstraint(name = "uq_manufacturers_slug", columnNames = "slug")
+        })
+public class Manufacturer {
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
     @Column(nullable = false, updatable = false)
     private UUID id;
+
+    @Version
+    @Column(nullable = false)
+    private Long version;
 
     @Column(nullable = false, length = 200)
     private String name;

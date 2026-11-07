@@ -1,0 +1,9 @@
+info:
+  name: Admin Get Manufacturers
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:8080/api/manufacturers/admin?page=0&size=20&sort=name,asc
+  auth: inherit
